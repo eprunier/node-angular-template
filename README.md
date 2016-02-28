@@ -1,19 +1,18 @@
-# MEAN webapps template
-
-Template I created for my own needs.
-
+# Node AngularJS Webapp template
 
 ## Requirements
 
-    $ node install -g nodemon
-    $ node install -g gulp-cli
+    $ npm install -g nodemon
+    $ npm install -g gulp-cli
+    $ npm install -g bower
 
 
 ## Install
 
 Clone this repository, then :
 
-    $ cd mean-template
+    $ cd node-angular-template
+    $ bower install
     $ npm install
 
 
@@ -25,6 +24,6 @@ Clone this repository, then :
 
 ### Create distribution
 
-    $ gulp dist
+    $ gulp
 
 
