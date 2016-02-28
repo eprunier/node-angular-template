@@ -1,0 +1,26 @@
+{
+  "name": "my-app",
+  "description": "Template for MEAN webapp",
+  "main": "gulp serve",
+  "authors": [
+    "Eric Prunier"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.0",
+    "angular-ui-router": "^0.2.18",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.5.0",
+    "bootstrap-social": "^4.12.0"
+  }
+}
