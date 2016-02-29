@@ -8,6 +8,7 @@ var express = require('express')
 	, adminRouter = require('./routes/admin')
 	, authenticateRouter = require('./routes/authenticate')
 	, apiRouter = require('./routes/api')
+	, path = require('path')
 	, port = process.env.PORT || 3000;
 
 
@@ -28,7 +29,11 @@ app.use(enableCORS);
 app.use('/admin', adminRouter);
 app.use('/authenticate', authenticateRouter);
 app.use('/api', apiRouter);
+
 app.use(express.static(__dirname + '/../public'));
+app.get('*', function (req, res) {
+	res.sendFile(path.join(__dirname, '/../public/index.html'));
+});
 
 // Connect to MongoDB
 //==============================================
