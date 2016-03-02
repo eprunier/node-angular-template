@@ -46,9 +46,9 @@ function AuthFactory($http, $q, AuthToken) {
 		return $http.post('/authenticate', {
 			email: email,
 			password: password
-		}).success(function (data) {
-			AuthToken.setToken(data.token);
-			return data;
+		}).then(function (response) {
+			AuthToken.setToken(response.data.token);
+			return $q.resolve(response.data);
 		});
 	};
 
@@ -69,10 +69,22 @@ function AuthFactory($http, $q, AuthToken) {
 	// Get current user.
 	authFactory.getUser = function () {
 		if (AuthToken.getToken()) {
-			return $http.get('/api/me');
+			return $http.get('/api/me', {cache: true}).then(function (response) {
+				return $q.resolve(response.data.token);
+			});
 		} else {
 			return $q.reject({message: 'No authenticated user'});
 		}
+	};
+
+	// Create a user.
+	authFactory.createUser = function (userData) {
+		return $http.post('/api/users', userData);
+	};
+
+	// Update user.
+	authFactory.updateUser = function (userId, userData) {
+		return $http.put('/api/users/' + userId, userData);
 	};
 
 	return authFactory;

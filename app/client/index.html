@@ -21,7 +21,7 @@
     <![endif]-->
 </head>
 
-<body>
+<body ng-controller="MainController as main">
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <div class="navbar-header">
@@ -41,12 +41,23 @@
             </a>
           </li>
         </ul>
-        <ul class="nav navbar-nav pull-right">
-          <li>
+        <ul class="nav navbar-nav navbar-right">
+          <li ng-if="!main.loggedIn">
             <a ui-sref="login" class="btn">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
             </a>
           </li>
+          <li class="dropdown" ng-if="main.loggedIn">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+              {{main.user.username}} 
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a ui-sref="account" href="#">My account</a></li>
+              <li><a href="#" ng-click="main.doLogout()">Logout</a></li>
+            </ul>
+          </li>          
         </ul>
       </div>
     </div>
@@ -69,9 +80,12 @@
   <script src="../../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
   <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="../../bower_components/lodash/dist/lodash.min.js"></script>
   <script src="app.js"></script>
   <script src="app.routes.js"></script>
-  <script src="controllers/loginController.js"></script>
+  <script src="controllers/mainController.js"></script>
+  <script src="controllers/accountController.js"></script>
+  <script src="services/authService.js"></script>
   <!-- endbuild -->
 
 </body>

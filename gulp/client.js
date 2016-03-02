@@ -34,7 +34,11 @@ gulp.task('client-jshint', function() {
 
 // Usemine
 // ============================================================
-gulp.task('client-usemin',['client-jshint'], function () {
+gulp.task('clean-scripts', function () {
+  del([config.dist.client + '/scripts']);
+});
+
+gulp.task('client-usemin', ['clean-scripts', 'client-jshint'], function () {
   return gulp
     .src([config.src.client + '/**/*.html'])
     .pipe(usemin({

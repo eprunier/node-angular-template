@@ -34,12 +34,14 @@ function authenticate(req, res) {
 					error: err
 				});
 			} else {
-				if (user) {
+				if (user && req.body.password) {
 					var validPassword = user.comparePassword(req.body.password);
+					console.log('validPassword:', validPassword);
 					if (validPassword) {
 						var token = jwt.sign({
 							email: user.email,
-							username: user.username
+							username: user.username,
+							id: user._id
 						}, jwtSecret, {
 							expiresInMinutes: 1440
 						});
