@@ -37,7 +37,7 @@ app.get('*', function (req, res) {
 
 // Connect to MongoDB
 //==============================================
-mongoose.connect('mongodb://localhost/dollsrocks');
+mongoose.connect('mongodb://localhost/node-angular');
 
 
 // Start application
