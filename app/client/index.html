@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 
 <head>
     <meta charset="utf-8">
@@ -36,14 +36,14 @@
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <li>
-            <a ui-sref="app" class="btn">
+            <a ui-sref="home" class="btn">
               <span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home
             </a>
           </li>
         </ul>
         <ul class="nav navbar-nav pull-right">
           <li>
-            <a ui-sref="app.login" class="btn">
+            <a ui-sref="login" class="btn">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
             </a>
           </li>
@@ -52,7 +52,7 @@
     </div>
   </nav>         
              
-  <div ui-view="content"></div>
+  <div ui-view="main"></div>
 
   <footer class="row-footer">
     <div class="container">
@@ -67,7 +67,11 @@
   <!-- build:js /scripts/main.js -->
   <script src="../../bower_components/angular/angular.min.js"></script>
   <script src="../../bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+  <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="app.js"></script>
+  <script src="app.routes.js"></script>
+  <script src="controllers/loginController.js"></script>
   <!-- endbuild -->
 
 </body>

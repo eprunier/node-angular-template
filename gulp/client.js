@@ -71,7 +71,7 @@ gulp.task('client-fonts', function() {
 gulp.task('client-watch', ['client-dist'], function() {
   // Watch files
   gulp.watch(
-    createWatchPattern(['/scripts/**/*.js', '/styles/**/*.css', '/**/*.html']),
+    createWatchPattern(['/**/*.js', '/**/*.css', '/**/*.html']),
     ['client-usemin']
   );
       
