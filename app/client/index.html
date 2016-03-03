@@ -10,7 +10,7 @@
     <link href="../../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="../../bower_components/bootstrap-social/bootstrap-social.css" rel="stylesheet">
-    <link href="styles/main.css" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet">
     <!-- endbuild -->
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -21,7 +21,7 @@
     <![endif]-->
 </head>
 
-<body ng-controller="MainController as main">
+<body ng-controller="MainController as mainCtrl">
   <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
       <div class="navbar-header">
@@ -42,20 +42,20 @@
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li ng-if="!main.loggedIn">
+          <li ng-if="!mainCtrl.isLoggedIn()">
             <a ui-sref="login" class="btn">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Login
             </a>
           </li>
-          <li class="dropdown" ng-if="main.loggedIn">
+          <li class="dropdown" ng-if="mainCtrl.isLoggedIn()">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-              {{main.user.username}} 
+              {{mainCtrl.user.username}} 
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
               <li><a ui-sref="account" href="#">My account</a></li>
-              <li><a href="#" ng-click="main.doLogout()">Logout</a></li>
+              <li><a href="#" ng-click="mainCtrl.logout()">Logout</a></li>
             </ul>
           </li>          
         </ul>
@@ -63,7 +63,7 @@
     </div>
   </nav>         
              
-  <div ui-view="main"></div>
+  <div ui-view="page-content"></div>
 
   <footer class="row-footer">
     <div class="container">
@@ -83,9 +83,10 @@
   <script src="../../bower_components/lodash/dist/lodash.min.js"></script>
   <script src="app.js"></script>
   <script src="app.routes.js"></script>
-  <script src="controllers/mainController.js"></script>
-  <script src="controllers/accountController.js"></script>
-  <script src="services/authService.js"></script>
+  <script src="components/main/mainController.js"></script>
+  <script src="components/login/loginController.js"></script>
+  <script src="components/account/accountController.js"></script>
+  <script src="components/auth/authService.js"></script>
   <!-- endbuild -->
 
 </body>

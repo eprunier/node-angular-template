@@ -1,9 +1,64 @@
 'use strict';
 
 angular.module('authService', [])
-	.factory('AuthToken', AuthTokenFactory)
 	.factory('Auth', AuthFactory)
+	.factory('AuthToken', AuthTokenFactory)
 	.factory('AuthInterceptor', AuthInterceptorFactory);
+
+/**
+ * Create Auth factory.
+ *
+ * @param  object $http Angular $http service
+ * @param  object $q    Angular $q promise service
+ * @return object       Auth factory
+ */
+function AuthFactory($http, $q, AuthToken) {
+	var authFactory = {};
+
+	// Get current user.
+	authFactory.getUser = function () {
+		return $http.get('/api/me', {cache: true}).then(function (response) {
+			return $q.resolve(response.data.token);
+		});
+	};
+
+	// Login.
+	authFactory.login = function (email, password) {
+		return $http.post('/authenticate', {
+			email: email,
+			password: password
+		}).then(function (response) {
+			AuthToken.setToken(response.data.token);
+		});
+	};
+
+	// Logout.
+	authFactory.logout = function () {
+		AuthToken.setToken();
+	};
+
+	// Test if there is a logged in user.
+	authFactory.isLoggedIn = function () {
+		if (AuthToken.getToken()) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	// Create a user.
+	authFactory.createUser = function (userData) {
+		return $http.post('/api/users', userData);
+	};
+
+	// Update user.
+	authFactory.updateUser = function (userId, userData) {
+		return $http.put('/api/users/' + userId, userData);
+	};
+
+	return authFactory;
+}
+
 
 /**
  * Create AuthToken factory.
@@ -31,64 +86,6 @@ function AuthTokenFactory($window) {
 	return authTokenFactory;
 }
 
-/**
- * Create Auth factory.
- *
- * @param  object $http Angular $http service
- * @param  object $q    Angular $q promise service
- * @return object       Auth factory
- */
-function AuthFactory($http, $q, AuthToken) {
-	var authFactory = {};
-
-	// Login.
-	authFactory.login = function (email, password) {
-		return $http.post('/authenticate', {
-			email: email,
-			password: password
-		}).then(function (response) {
-			AuthToken.setToken(response.data.token);
-			return $q.resolve(response.data);
-		});
-	};
-
-	// Logout.
-	authFactory.logout = function () {
-		AuthToken.setToken();
-	};
-
-	// Test if there is a logged in user.
-	authFactory.isLoggedIn = function () {
-		if (AuthToken.getToken()) {
-			return true;
-		} else {
-			return false;
-		}
-	};
-
-	// Get current user.
-	authFactory.getUser = function () {
-		if (AuthToken.getToken()) {
-			return $http.get('/api/me', {cache: true}).then(function (response) {
-				return $q.resolve(response.data.token);
-			});
-		} else {
-			return $q.reject({message: 'No authenticated user'});
-		}
-	};
-
-	// Create a user.
-	authFactory.createUser = function (userData) {
-		return $http.post('/api/users', userData);
-	};
-
-	// Update user.
-	authFactory.updateUser = function (userId, userData) {
-		return $http.put('/api/users/' + userId, userData);
-	};
-
-	return authFactory;
-}
 
 /**
  * Create AuthInterceptor factory.

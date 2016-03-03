@@ -5,18 +5,18 @@
 		<div class="col-md-3">
 		</div>
 		<div class="col-md-6">
-			<form ng-submit="account.updateAccount()">
+			<form ng-submit="accountCtrl.updateAccount()">
 			  <div class="form-group">
 			    <label for="email">Email</label>
-			    <input type="email" class="form-control" id="email" placeholder="Email" ng-model="account.updateData.email" disabled>
+			    <input type="email" class="form-control" id="email" placeholder="Email" ng-model="accountCtrl.updateData.email" disabled>
 			  </div>
 			  <div class="form-group">
 			    <label for="username">Username</label>
-			    <input type="text" class="form-control" id="username" placeholder="Password" ng-model="account.updateData.username">
+			    <input type="text" class="form-control" id="username" placeholder="Password" ng-model="accountCtrl.updateData.username">
 			  </div>
 			  <div class="form-group">
 			    <label for="password">Password</label>
-			    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="account.updateData.password">
+			    <input type="password" class="form-control" id="password" placeholder="Password" ng-model="accountCtrl.updateData.password">
 			  </div>
 			  <button type="submit" class="btn btn-danger pull-right">Update</button>
 			</form>

@@ -33,25 +33,43 @@ apiRouter.route('/users/:user_id')
  * @param function next continuation function 
  */
 function checkToken(req, res, next) {
-	var token;
-
-	var authorizationHeader = req.headers.authorization;
-	if (authorizationHeader) {
-		token = authorizationHeader.split(' ')[1];
-	}
-
-	if (token) {
-		jwt.verify(token, jwtSecret, function (err, decodedToken) {
-			if (err) {
-				sendAccessForbidden(res);
-			} else {
-				req.token = decodedToken;
-				next();
-			}
+	getDecodedToken(req)
+		.then(function (token) {
+			req.token = token;
+			next();
+		})
+		.catch(function () {
+			sendAccessForbidden(res);
 		});
-	} else {
-		sendAccessForbidden(res);
-	}
+}
+
+/**
+ * Extract decoded token from request.
+ *
+ * @param  object  req HTTP request
+ * @return promise     decoded token
+ */
+function getDecodedToken(req) {
+	return new Promise(function (resolve, reject) {
+		var token; 
+
+		var authorizationHeader = req.headers.authorization;
+		if (authorizationHeader) {
+			token = authorizationHeader.split(' ')[1];
+		}
+
+		if (token) {
+			jwt.verify(token, jwtSecret, function (err, decodedToken) {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(decodedToken);
+				}
+			});
+		} else {
+			reject();
+		}
+	});
 }
 
 /**
@@ -163,38 +181,48 @@ function getUser(req, res) {
  * @param object res HTTP response
  */
 function updateUser(req, res) {
-	User.findById(req.params.user_id, function (err, user) {
-		if (err) {
-			res.status(500);
-			res.send(err);
-		} else {
-			if (user) {
-				user.username = req.body.username || user.username;
-				user.password = req.body.password || user.password;
+	var userId = req.params.user_id;
+	getDecodedToken(req).then(function (token) {
+		if (token.id === userId) {
+			User.findById(req.params.user_id, function (err, user) {
+				if (err) {
+					res.status(500);
+					res.send(err);
+				} else {
+					if (user) {
+						user.username = req.body.username || user.username;
 
-				user.save(function (err) {
-					if (err) {
-						res.status(500);
-						res.json({
-							success: false,
-							error: err
+						var password = req.body.password;
+						if (password) {
+							user.password = password;
+						}
+
+						user.save(function (err) {
+							if (err) {
+								res.status(500);
+								res.json({
+									success: false,
+									error: err
+								});
+							} else {
+								res.json({
+									success: true,
+									message: 'User updated'
+								});
+							}
 						});
 					} else {
+						res.status(404);
 						res.json({
-							success: true,
-							message: 'User updated'
+							success: false,
+							error: 'User not found'
 						});
 					}
-				});
-			} else {
-				res.status(404);
-				res.json({
-					success: false,
-					error: 'User not found'
-				});
-			}
+				}
+			});
 		}
 	});
+
 }
 
 /**

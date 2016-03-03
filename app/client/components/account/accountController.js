@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('accountController', [])
-	.controller('AccountController', function ($rootScope, Auth) {
+	.controller('AccountController', function (Auth) {
 		var vm = this;
 
 		Auth.getUser().then(function (user) {

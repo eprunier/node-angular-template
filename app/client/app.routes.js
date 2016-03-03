@@ -7,26 +7,28 @@ angular.module('app').config(function ($stateProvider, $urlRouterProvider) {
 		.state('home', {
 			url: '/',
 			views: {
-				'main': {
-					templateUrl: 'views/home.html',
+				'page-content': {
+					templateUrl: 'components/home/home.html',
 				}
 			}
 		})
 		.state('login', {
 			url: '/login',
 			views: {
-				'main': {
-					templateUrl: 'views/login.html'
+				'page-content': {
+					templateUrl: 'components/login/login.html',
+					controller: 'LoginController',
+					controllerAs: 'loginCtrl'
 				}
 			}
 		})
 		.state('account', {
 			url: '/account',
 			views: {
-				'main': {
-					templateUrl: 'views/account.html',
+				'page-content': {
+					templateUrl: 'components/account/account.html',
 					controller: 'AccountController',
-					controllerAs: 'account'
+					controllerAs: 'accountCtrl'
 				}
 			}
 		});
