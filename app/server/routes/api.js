@@ -10,20 +10,64 @@ var express = require('express')
 //
 // Router bindings and middlewares.
 // ==============================================
+
+// public routes
+apiRouter.route('/users')
+	.post(addUser);
+
+
+// authenticated routes
 apiRouter.use(checkToken);
 
-apiRouter.route('/me')
-	.get(me);
-
 apiRouter.route('/users')
-	.get(getUsers)
-	.post(addUser);
+	.get(getUsers);
 
 apiRouter.route('/users/:user_id')
 	.get(getUser)
 	.put(updateUser)
 	.delete(deleteUser);
 
+apiRouter.route('/me')
+	.get(me);
+
+
+/**
+ * Add new user.
+ *
+ * @param object req HTTP request
+ * @param object res HTTP response
+ */
+function addUser(req, res) {
+	var user = new User();
+
+	user.email = req.body.email;
+	user.username = req.body.username;
+	user.password = req.body.password;
+
+	user.save(function (err) {
+		if (err) {
+			if (err.code === 11000) {
+				res.status(400);
+				res.json({
+					success: false,
+					error: 'Username already exists'
+				});
+			} else {
+				res.status(500);
+				res.json({
+					success: false,
+					error: err
+				});
+			}			
+		} else {
+			res.status(201);
+			res.json({
+				success: true,
+				message: 'User created'
+			});
+		}
+	});
+}
 
 /**
  * Check token middleware.
@@ -106,43 +150,6 @@ function me(req, res) {
 function getUsers(req, res) {
 	User.find(function (err, users) {
 		res.json(users);
-	});
-}
-
-/**
- * Add new user.
- *
- * @param object req HTTP request
- * @param object res HTTP response
- */
-function addUser(req, res) {
-	var user = new User();
-
-	user.email = req.body.email;
-	user.username = req.body.username;
-	user.password = req.body.password;
-
-	user.save(function (err) {
-		if (err) {
-			if (err.code === 11000) {
-				res.status(400);
-				res.json({
-					success: false,
-					error: 'Username already exists'
-				});
-			} else {
-				res.status(500);
-				res.json({
-					success: false,
-					error: err
-				});
-			}			
-		} else {
-			res.json({
-				success: true,
-				message: 'User created'
-			});
-		}
 	});
 }
 

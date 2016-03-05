@@ -17,5 +17,7 @@ angular.module('loginController', [])
 
 		vm.createAccount = function () {
 			Auth.createUser(vm.creationData);
+			vm.creationSuccess = true;
+			vm.creationData = {};
 		};
 	});

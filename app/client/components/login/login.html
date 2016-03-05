@@ -48,6 +48,9 @@
 							<label>Password</label>
 							<input type="password" class="form-control" ng-model="loginCtrl.creationData.password">
 						</div>
+						<div class="alert alert-success" role="alert" ng-if="loginCtrl.creationSuccess">
+							User created.
+						</div>
 						<button type="submit" class="btn btn-block btn-primary">
 							<span>Create</span>
 						</button>		
